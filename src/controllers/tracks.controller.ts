@@ -25,13 +25,14 @@ export const createTrack = async (req: Request, res: Response) => {
 }
 
 export const addTrackToAlbum = async (req: Request, res: Response) => {
-    const {albumId, trackId} = req.body
+    const {trackId} = req.params
+    const {albumId} = req.body
 
     try {
 
         const updatedAlbum = await prisma.track.update({
             where: {
-                id: trackId
+                id: Number(trackId)
             },
             data: {
                 albumId: albumId
@@ -61,13 +62,13 @@ export const getTracks = async (req: Request, res: Response) => {
 }
 
 export const deleteTrack = async (req: Request, res: Response) => {
-    const {trackId} = req.body
+    const {trackId} = req.params
 
     if (!trackId) return res.status(400).json({msg: "Please enter all fields"})
     try {
         const deletedTrack = await prisma.track.delete({
             where: {
-                id: trackId
+                id: Number(trackId)
             }
         })
 

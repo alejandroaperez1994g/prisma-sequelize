@@ -2,13 +2,14 @@ import {Request, Response} from "express"
 import prisma from "../db/prismaClient";
 
 export const createPlaylist = async (req: Request, res: Response) => {
-    const {name, userId} = req.body
+    const {userId} = req.params
+    const {name} = req.body
     try {
 
         const newPlaylist = await prisma.playlist.create({
             data: {
                 name,
-                userId
+                userId: Number(userId)
             }
         })
 
@@ -34,11 +35,11 @@ export const getPlaylists = async (req: Request, res: Response) => {
 }
 
 export const deletePlaylist = async (req: Request, res: Response) => {
-    const {playlistId} = req.body
+    const {playlistId} = req.params
     try {
         const deletedPlaylist = await prisma.playlist.delete({
             where: {
-                id: playlistId
+                id: Number(playlistId)
             }
         })
         res.status(200).json({msg: "Playlist Deleted Successfully", data: deletedPlaylist});

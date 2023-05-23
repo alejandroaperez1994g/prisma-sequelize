@@ -54,7 +54,7 @@ export const getAlbums = async (req: Request, res: Response) => {
 
 
 export const deleteAlbum = async (req: Request, res: Response) => {
-    const {albumId} = req.body
+    const {albumId} = req.params
 
     if (!albumId) return res.status(400).json({msg: "Please enter all fields"})
 
@@ -62,7 +62,7 @@ export const deleteAlbum = async (req: Request, res: Response) => {
 
         const deletedAlbum = await prisma.album.delete({
             where: {
-                id: albumId
+                id: Number(albumId)
             }
         })
 
@@ -74,7 +74,8 @@ export const deleteAlbum = async (req: Request, res: Response) => {
 }
 
 export const updateAlbumName = async (req: Request, res: Response) => {
-    const {albumId, name} = req.body
+    const {albumId} = req.params
+    const {name} = req.body
 
     if (!albumId || !name) return res.status(400).json({msg: "Please enter all fields"})
 
@@ -82,7 +83,7 @@ export const updateAlbumName = async (req: Request, res: Response) => {
 
         const updatedAlbum = await prisma.album.update({
             where: {
-                id: albumId
+                id: Number(albumId)
             },
             data: {
                 name: name

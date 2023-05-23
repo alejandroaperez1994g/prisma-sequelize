@@ -92,17 +92,20 @@ export const getUsers = async (req: Request, res: Response) => {
 }
 
 export const deleteUser = async (req: Request, res: Response) => {
-    const {userId} = req.body;
+    const {userId} = req.params;
     try {
+        
+        //* Delete all playlists associated with the user, you must first delete the playlist and then the user
+
         const deletedPlaylists = prisma.playlist.deleteMany({
             where: {
-                userId: userId
+                userId: Number(userId)
             }
         })
 
         const deletedUser = prisma.user.delete({
             where: {
-                id: userId
+                id: Number(userId)
             }
         })
 

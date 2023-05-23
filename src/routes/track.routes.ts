@@ -6,9 +6,9 @@ const tracksRoutes = Router();
 
 tracksRoutes
     .post("/add", createTrack)
-    .patch("/toAlbum", addTrackToAlbum)
+    .patch("/toAlbum/:trackId", addTrackToAlbum)
     .get("/", getTracks)
-    .delete("/", deleteTrack)
+    .delete("/:trackId", deleteTrack)
 
 
 export default tracksRoutes;

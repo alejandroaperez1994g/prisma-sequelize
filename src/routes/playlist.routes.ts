@@ -5,8 +5,8 @@ const playlistRouter = Router();
 
 playlistRouter
     .get("/", getPlaylists)
-    .post("/", createPlaylist)
-    .delete("/", deletePlaylist)
+    .post("/:userId", createPlaylist)
+    .delete("/:playlistId", deletePlaylist)
 
 
 export default playlistRouter;

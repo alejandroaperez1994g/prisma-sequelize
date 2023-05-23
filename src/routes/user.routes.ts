@@ -7,7 +7,7 @@ userRoutes
     .post("/signin", signIn)
     .post("/signup", signUp)
     .get("/", getUsers)
-    .delete("/", deleteUser)
+    .delete("/:userId", deleteUser)
 
 
 export default userRoutes;
