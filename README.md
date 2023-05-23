@@ -43,7 +43,7 @@ To run this project, follow the instructions below:
 5. Run the project:
 
    ```bash
-   npm start
+   npm dev
    ```
 
    This command will transpile the TypeScript code and start the Express server.
