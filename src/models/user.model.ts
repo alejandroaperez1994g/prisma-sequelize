@@ -2,10 +2,7 @@ import {DataTypes} from "sequelize";
 import {sequelize} from "../db/connect";
 
 
-const UsuarioModel = sequelize.define("Usuario", {
-    id: {
-        type: DataTypes.INTEGER,
-    },
+const UserModel = sequelize.define("User", {
     name: {
         type: DataTypes.STRING,
     },
@@ -15,5 +12,9 @@ const UsuarioModel = sequelize.define("Usuario", {
     password: {
         type: DataTypes.STRING,
     }
-
+},{
+    freezeTableName: true,
 })
+
+
+export default UserModel

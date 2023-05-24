@@ -1,4 +1,7 @@
 import {Sequelize} from "sequelize";
+import * as dotenv from 'dotenv'
+
+dotenv.config()
 
 const databaseURL = process.env.DATABASE_URL_SEQUELIZE || 'postgres://postgres2:secret@localhost:5432/postgres'
 
