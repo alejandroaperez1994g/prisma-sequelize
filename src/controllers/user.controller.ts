@@ -20,7 +20,7 @@ export const signIn = async (req: Request, res: Response) => {
             return res.status(400).json({msg: "User Does not exist"});
         }
 
-        const isMatch = await comparePassword(password, user.password);
+        const isMatch = await comparePassword(String(password), String(user.password));
 
         if (!isMatch) {
             return res.status(400).json({msg: "Invalid credentials"});
@@ -49,14 +49,14 @@ export const signUp = async (req: Request, res: Response) => {
         });
 
         if (user) {
-            return res.status(400).json({msg: "User already exists"});
+            return res.status(409).json({msg: "User already exists"});
         }
 
         const newUser = await prisma.user.create({
             data: {
                 name,
                 email,
-                password: await hashPassword(password),
+                password: await hashPassword(String(password)),
             }
         });
 
@@ -94,7 +94,7 @@ export const getUsers = async (req: Request, res: Response) => {
 export const deleteUser = async (req: Request, res: Response) => {
     const {userId} = req.params;
     try {
-        
+
         //* Delete all playlists associated with the user, you must first delete the playlist and then the user
 
         const deletedPlaylists = prisma.playlist.deleteMany({
