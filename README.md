@@ -13,6 +13,11 @@ Express.js is a fast, unopinionated, and minimalist web framework for Node.js. I
 ### Prisma
 Prisma is an open-source database toolkit that simplifies database access for Node.js applications. It provides an Object-Relational Mapping (ORM) layer and a powerful query builder. Prisma supports multiple databases and offers features such as data modeling, schema migrations, and real-time data synchronization.
 
+### Swagger
+Swagger is an open-source framework that allows developers to design, build, document, and consume RESTful APIs. It provides a user-friendly interface for interacting with APIs and generating interactive API documentation. With Swagger, you can easily visualize and test your API endpoints, explore available routes, and understand the request and response formats.
+
+In this project, Swagger has been integrated to facilitate API documentation and exploration. Once you have the project running, you can access the Swagger documentation by navigating to http://localhost:8080/docs in your browser. This will open the Swagger UI, where you can view detailed information about the available routes, make test requests, and interact with the API.
+
 ## Installation
 
 To run this project, follow the instructions below:
