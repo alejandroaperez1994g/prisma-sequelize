@@ -1,20 +1,23 @@
 import {Request, Response} from "express";
-import prisma from "../db/prismaClient";
+import TrackModel from "../models/tracks.model";
+
 
 export const createTrack = async (req: Request, res: Response) => {
+    const {albumId} = req.params
     const {name, url} = req.body
 
-    if (!name || !url) {
+    if (!name || !url || !albumId) {
         return res.status(400).json({msg: "Please enter all fields"});
     }
 
     try {
-        const newTrack = await prisma.track.create({
-            data: {
-                name,
-                url,
-            }
+        const newTrack = await TrackModel.create({
+            name,
+            url
         })
+
+        // @ts-ignore
+        newTrack.setAlbum(albumId)
 
         res.status(200).json({msg: "Track Created Successfully", data: newTrack});
 
@@ -24,36 +27,11 @@ export const createTrack = async (req: Request, res: Response) => {
     }
 }
 
-export const addTrackToAlbum = async (req: Request, res: Response) => {
-    const {trackId} = req.params
-    const {albumId} = req.body
-
-    try {
-
-        const updatedAlbum = await prisma.track.update({
-            where: {
-                id: Number(trackId)
-            },
-            data: {
-                albumId: albumId
-            }
-        })
-
-        res.status(200).json({msg: "Album Tracks Updated Successfully", data: updatedAlbum});
-
-    } catch (err) {
-        console.error(err)
-        res.status(500).json({msg: `Server Error:${err} `})
-    }
-}
 
 export const getTracks = async (req: Request, res: Response) => {
     try {
-        const tracks = await prisma.track.findMany({
-            orderBy: {
-                id: "asc"
-            }
-        })
+        const tracks = await TrackModel.findAll()
+
         res.status(200).json({msg: "Tracks Fetched Successfully", data: tracks});
     } catch (err) {
         console.log(err)
@@ -66,9 +44,10 @@ export const deleteTrack = async (req: Request, res: Response) => {
 
     if (!trackId) return res.status(400).json({msg: "Please enter all fields"})
     try {
-        const deletedTrack = await prisma.track.delete({
+        const deletedTrack = await TrackModel.destroy({
             where: {
                 id: Number(trackId)
+            
             }
         })
 

@@ -1,5 +1,6 @@
 import {Request, Response} from "express";
 import UserModel from "../models/user.model";
+
 import {comparePassword, hashPassword} from "../utils/bcrypt";
 
 export const signIn = async (req: Request, res: Response) => {
@@ -11,7 +12,7 @@ export const signIn = async (req: Request, res: Response) => {
 
     try {
         const user = await UserModel.findOne({
-            where:{
+            where: {
                 email
             }
         })
@@ -43,7 +44,7 @@ export const signUp = async (req: Request, res: Response) => {
 
     try {
         const user = await UserModel.findOne({
-            where:{
+            where: {
                 email
             }
         })
@@ -80,22 +81,14 @@ export const getUsers = async (req: Request, res: Response) => {
 export const deleteUser = async (req: Request, res: Response) => {
     const {userId} = req.params;
     try {
-
-        //* Delete all playlists associated with the user, you must first delete the playlist and then the user
-
-        // const deletedPlaylists = prisma.playlist.deleteMany({
-        //     where: {
-        //         userId: Number(userId)
-        //     }
-        // })
-
         await UserModel.destroy({
-            where:{
-                id:userId
-            }
+            where: {
+                id: userId
+            },
         })
 
-        res.status(200).json({msg: "User Deleted Successfully"});
+
+        res.status(204).json({msg: "User Deleted Successfully"});
     } catch (err) {
         console.error(err);
         res.status(500).json({msg: `Server Error:${err} `});

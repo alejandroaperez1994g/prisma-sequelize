@@ -1,17 +1,29 @@
 import {Request, Response} from "express"
-import prisma from "../db/prismaClient";
+import PlaylistModel from "../models/playlist.model";
+import UserModel from "../models/user.model";
+
 
 export const createPlaylist = async (req: Request, res: Response) => {
     const {userId} = req.params
     const {name} = req.body
-    try {
 
-        const newPlaylist = await prisma.playlist.create({
-            data: {
-                name,
-                userId: Number(userId)
+    try {
+        const user = await UserModel.findOne({
+            where: {
+                id: Number(userId)
             }
         })
+
+        if (!user) return res.status(404).json({msg: "User not found"})
+
+
+        const newPlaylist = await PlaylistModel.create({
+            name
+        })
+
+
+        // @ts-ignore
+        newPlaylist.setUser(userId)
 
         res.status(200).json({msg: "Playlist Created Successfully", data: newPlaylist});
 
@@ -24,7 +36,14 @@ export const createPlaylist = async (req: Request, res: Response) => {
 export const getPlaylists = async (req: Request, res: Response) => {
     try {
 
-        const playlists = await prisma.playlist.findMany({})
+        //podemos seleccionar solo los campos que queremos mostrar usando attributes
+        const playlists = await PlaylistModel.findAll({
+            attributes: ["id", "name"],
+            include: {
+                model: UserModel,
+                attributes: ["id", "name", "email"]
+            }
+        })
 
         res.status(200).json({msg: "Playlists Fetched Successfully", data: playlists});
 
@@ -37,15 +56,35 @@ export const getPlaylists = async (req: Request, res: Response) => {
 export const deletePlaylist = async (req: Request, res: Response) => {
     const {playlistId} = req.params
     try {
-        const deletedPlaylist = await prisma.playlist.delete({
+        const deletedPlaylist = await PlaylistModel.destroy({
             where: {
                 id: Number(playlistId)
             }
         })
-        res.status(200).json({msg: "Playlist Deleted Successfully", data: deletedPlaylist});
+        console.log({deletedPlaylist})
+
+        res.status(204).json({msg: "Playlist Deleted Successfully"});
     } catch (err) {
         console.error(err)
         res.status(500).json({msg: `Server Error:${err} `})
     }
 }
 
+export const updatePlaylist = async (req: Request, res: Response) => {
+    const {playlistId} = req.params
+    const {name} = req.body
+
+    try {
+        await PlaylistModel.update({name}, {
+            where: {
+                id: Number(playlistId)
+            }
+        })
+
+        res.status(200).json({msg: "Playlist Updated Successfully"});
+    } catch (err) {
+        console.error(err)
+        res.status(500).json({msg: `Server Error:${err} `})
+    }
+
+}

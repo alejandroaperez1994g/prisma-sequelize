@@ -1,5 +1,6 @@
-import prisma from "../db/prismaClient"
 import {Request, Response} from "express";
+import AlbumModel from "../models/album.model";
+import TrackModel from "../models/tracks.model";
 
 
 export const createAlbum = async (req: Request, res: Response) => {
@@ -10,11 +11,9 @@ export const createAlbum = async (req: Request, res: Response) => {
 
 
     try {
-        const newAlbum = await prisma.album.create({
-            data: {
-                name,
-                releaseDate
-            }
+        const newAlbum = await AlbumModel.create({
+            name,
+            year: releaseDate
         })
 
         res.status(200).json({msg: "Album Created Successfully", data: newAlbum});
@@ -30,17 +29,11 @@ export const createAlbum = async (req: Request, res: Response) => {
 export const getAlbums = async (req: Request, res: Response) => {
     try {
 
-        const albums = await prisma.album.findMany({
-            select: {
-                id: true,
-                name: true,
-                releaseDate: true,
-                tracks: {
-                    select: {
-                        id: true,
-                        name: true,
-                    }
-                }
+        const albums = await AlbumModel.findAll({
+            attributes: ["id", "name", "year"],
+            include: {
+                model: TrackModel,
+                attributes: ["id", "name", "url"]
             }
         })
 
@@ -60,7 +53,7 @@ export const deleteAlbum = async (req: Request, res: Response) => {
 
     try {
 
-        const deletedAlbum = await prisma.album.delete({
+        const deletedAlbum = await AlbumModel.destroy({
             where: {
                 id: Number(albumId)
             }
@@ -81,12 +74,9 @@ export const updateAlbumName = async (req: Request, res: Response) => {
 
     try {
 
-        const updatedAlbum = await prisma.album.update({
+        const updatedAlbum = await AlbumModel.update({name}, {
             where: {
                 id: Number(albumId)
-            },
-            data: {
-                name: name
             }
         })
 
