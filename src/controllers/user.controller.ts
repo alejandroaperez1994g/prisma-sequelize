@@ -33,7 +33,6 @@ export const signIn = async (req: Request, res: Response) => {
     }
 }
 
-
 export const signUp = async (req: Request, res: Response) => {
     const {name, email, password} = req.body;
 
@@ -97,21 +96,21 @@ export const deleteUser = async (req: Request, res: Response) => {
 
         //* Delete all playlists associated with the user, you must first delete the playlist and then the user
 
-        const deletedPlaylists = prisma.playlist.deleteMany({
-            where: {
-                userId: Number(userId)
-            }
-        })
+        // const deletedPlaylists = prisma.playlist.deleteMany({
+        //     where: {
+        //         userId: Number(userId)
+        //     }
+        // })
 
-        const deletedUser = prisma.user.delete({
+        const deletedUser = await prisma.user.delete({
             where: {
                 id: Number(userId)
             }
         })
+        console.log(deletedUser)
+        // const transaction = await prisma.$transaction([deletedPlaylists, deletedUser]);
 
-        const transaction = await prisma.$transaction([deletedPlaylists, deletedUser]);
-
-        res.status(200).json({msg: "User Deleted Successfully", data: transaction});
+        res.status(200).json({msg: "User Deleted Successfully", data: deletedUser});
     } catch (err) {
         console.error(err);
         res.status(500).json({msg: `Server Error:${err} `});
