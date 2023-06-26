@@ -1,7 +1,7 @@
 import {Router} from "express";
-import {createPlaylist, deletePlaylist, getPlaylists} from "../controllers/playlists.controller";
+import {createPlaylist, deletePlaylist, getPlaylists} from "../../controllers/postgres/playlists.controller";
 
-const playlistRouter = Router();
+export const playlistRouter = Router();
 
 playlistRouter
     .get("/", getPlaylists)

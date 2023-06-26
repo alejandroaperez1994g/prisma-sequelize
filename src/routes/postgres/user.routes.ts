@@ -1,7 +1,7 @@
 import {Router} from 'express';
-import {deleteUser, getUsers, signIn, signUp} from "../controllers/user.controller";
+import {deleteUser, getUsers, signIn, signUp} from "../../controllers/postgres/user.controller";
 
-const userRoutes = Router();
+export const userRoutes = Router();
 
 
 /**
@@ -216,4 +216,4 @@ userRoutes.get("/", getUsers)
 userRoutes.delete("/:userId", deleteUser)
 
 
-export default userRoutes;
+

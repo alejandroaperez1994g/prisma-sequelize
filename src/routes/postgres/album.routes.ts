@@ -1,7 +1,7 @@
 import {Router} from 'express';
-import {createAlbum, deleteAlbum, getAlbums, updateAlbumName} from "../controllers/albums.controller";
+import {createAlbum, deleteAlbum, getAlbums, updateAlbumName} from "../../controllers/postgres/albums.controller";
 
-const albumRoutes = Router();
+export const albumRoutes = Router();
 
 
 albumRoutes

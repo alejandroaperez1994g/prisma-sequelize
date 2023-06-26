@@ -1,8 +1,8 @@
 import {Router} from 'express';
-import {addTrackToAlbum, createTrack, deleteTrack, getTracks} from "../controllers/tracks.controller";
+import {addTrackToAlbum, createTrack, deleteTrack, getTracks} from "../../controllers/postgres/tracks.controller";
 
 
-const tracksRoutes = Router();
+export const tracksRoutes = Router();
 
 tracksRoutes
     .post("/add", createTrack)
@@ -11,4 +11,3 @@ tracksRoutes
     .delete("/:trackId", deleteTrack)
 
 
-export default tracksRoutes;
