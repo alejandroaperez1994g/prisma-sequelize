@@ -1,5 +1,6 @@
 import {Request, Response} from "express";
-import prisma from "../db/prismaClient";
+import {postgresClient as prisma} from "../../db/prismaClient";
+
 
 export const createTrack = async (req: Request, res: Response) => {
     const {name, url} = req.body

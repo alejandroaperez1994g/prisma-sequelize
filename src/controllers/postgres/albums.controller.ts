@@ -1,5 +1,5 @@
-import prisma from "../db/prismaClient"
 import {Request, Response} from "express";
+import {postgresClient as prisma} from "../../db/prismaClient";
 
 
 export const createAlbum = async (req: Request, res: Response) => {

@@ -1,6 +1,7 @@
 import {Request, Response} from "express";
-import prisma from "../db/prismaClient";
-import {comparePassword, hashPassword} from "../utils/bcrypt";
+import {postgresClient as prisma} from "../../db/prismaClient";
+
+import {comparePassword, hashPassword} from "../../utils/bcrypt";
 
 export const signIn = async (req: Request, res: Response) => {
     const {email, password} = req.body;
